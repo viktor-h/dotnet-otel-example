@@ -1,0 +1,6 @@
+@dotnet_otel_example_HostAddress = http://localhost:5257
+
+GET {{dotnet_otel_example_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
