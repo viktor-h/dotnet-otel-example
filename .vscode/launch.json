@@ -1,0 +1,26 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": ".NET Launch (DAP-friendly)",
+      "type": "coreclr",
+      "request": "launch",
+      "program": "${workspaceFolder}/bin/Debug/net10.0/dotnet-otel-example.dll",
+      "cwd": "${workspaceFolder}",
+      "stopAtEntry": false,
+      "console": "integratedTerminal",
+      "args": [
+        "--urls",
+        "http://localhost:5177"
+      ],
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "OTEL_SERVICE_NAME": "example-app",
+        "OTEL_EXPORTER_OTLP_PROTOCOL": "grpc",
+        "OTEL_EXPORTER_OTLP_ENDPOINT": "http://localhost:4317"
+      },
+      "launchSettingsProfile": "http",
+      "launchSettingsFilePath": "${workspaceFolder}/Properties/launchSettings.json"
+    }
+  ]
+}
