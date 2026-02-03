@@ -18,9 +18,7 @@
         "OTEL_SERVICE_NAME": "example-app",
         "OTEL_EXPORTER_OTLP_PROTOCOL": "grpc",
         "OTEL_EXPORTER_OTLP_ENDPOINT": "http://localhost:4317"
-      },
-      "launchSettingsProfile": "http",
-      "launchSettingsFilePath": "${workspaceFolder}/Properties/launchSettings.json"
+      }
     }
   ]
 }
