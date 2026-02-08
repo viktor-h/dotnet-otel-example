@@ -17,12 +17,17 @@ builder
     .Services.AddOpenTelemetry()
     .UseOtlpExporter()
     .WithTracing(t => t.AddAspNetCoreInstrumentation().AddHttpClientInstrumentation())
-    .WithMetrics(m => m.AddAspNetCoreInstrumentation().AddHttpClientInstrumentation());
+    .WithMetrics(m =>
+        m.AddAspNetCoreInstrumentation().AddHttpClientInstrumentation().AddRuntimeInstrumentation()
+    );
 
 var app = builder.Build();
 
 var otlpEndpoint = Environment.GetEnvironmentVariable("OTEL_EXPORTER_OTLP_ENDPOINT");
-if (!string.IsNullOrWhiteSpace(otlpEndpoint) && Uri.TryCreate(otlpEndpoint, UriKind.Absolute, out var uri))
+if (
+    !string.IsNullOrWhiteSpace(otlpEndpoint)
+    && Uri.TryCreate(otlpEndpoint, UriKind.Absolute, out var uri)
+)
 {
     app.Logger.LogInformation(
         "  OTLP target host: {Host}, port: {Port}, scheme: {Scheme}",
