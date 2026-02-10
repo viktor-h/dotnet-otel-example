@@ -9,11 +9,17 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.2" />
+    <PackageReference Include="Npgsql" Version="*" />
+    <PackageReference Include="Npgsql.OpenTelemetry" Version="*" />
     <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="*" />
     <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="*" />
     <PackageReference Include="OpenTelemetry.Instrumentation.Http" Version="*" />
     <PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="*" />
     <PackageReference Include="OpenTelemetry.Instrumentation.Runtime" Version="1.15.0" />
+    <PackageReference Include="Roslynator.Analyzers" Version="4.15.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
   </ItemGroup>
 
 </Project>

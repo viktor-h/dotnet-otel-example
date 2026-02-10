@@ -1,6 +1,17 @@
 @dotnet_otel_example_HostAddress = http://localhost:5257
 
-GET {{dotnet_otel_example_HostAddress}}/weatherforecast/
+POST {{dotnet_otel_example_HostAddress}}/weatherforecast
+Content-Type: application/json
+
+{
+  "date": "2026-02-10",
+  "temperatureC": 12,
+  "summary": "Cool"
+}
+
+###
+
+GET {{dotnet_otel_example_HostAddress}}/weatherforecast
 Accept: application/json
 
 ###

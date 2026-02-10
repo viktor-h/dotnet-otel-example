@@ -1,6 +1,6 @@
 # dotnet-otel-example
 
-ASP.NET Core example that exports traces and metrics with OpenTelemetry over OTLP.
+ASP.NET Core example that exports traces and metrics with OpenTelemetry over OTLP and stores weather reports in PostgreSQL.
 
 ## Prerequisites
 
@@ -15,24 +15,31 @@ From the repo root:
 ./run-local.sh
 ```
 
-This script starts:
+This script starts via `docker compose`:
 
-1. An OpenTelemetry Collector container on `localhost:4317` using `otel-collector-local.yaml`
-2. The ASP.NET Core app (`dotnet-otel-example.csproj`)
+1. An OpenTelemetry Collector on `localhost:4317` using `otel-collector-local.yaml`
+2. A PostgreSQL database on `localhost:5432` (`weather` DB)
+3. The ASP.NET Core app (`dotnet-otel-example.csproj`)
 
-## Test the endpoint
+## API
 
-In a second terminal:
+### Insert a weather report
+
+```bash
+curl -X POST http://localhost:5257/weatherforecast \
+  -H "Content-Type: application/json" \
+  -d '{"date":"2026-02-10","temperatureC":12,"summary":"Cool"}'
+```
+
+### Fetch weather reports
 
 ```bash
 curl http://localhost:5257/weatherforecast
 ```
 
-You should see telemetry output in the collector logs (debug exporter).
-
 ## Run with local SigNoz
 
-This mode keeps your local OpenTelemetry Collector in the path and forwards data to SigNoz.
+This mode keeps a local OpenTelemetry Collector in front of SigNoz and also starts PostgreSQL.
 
 ### 1) Start SigNoz (self-host)
 
@@ -56,10 +63,10 @@ From this repo root:
 
 What this does:
 
-1. Starts your local collector using `otel-collector-signoz-local.yaml`
-2. Exposes it on host ports `14317` (gRPC) and `14318` (HTTP)
+1. Starts local infra via `docker-compose.signoz-local.yml` (collector + postgres)
+2. Exposes collector on host ports `14317` (gRPC) and `14318` (HTTP)
 3. Runs the .NET app with `OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:14317`
-4. Forwards traces/metrics/logs from the local collector to SigNoz at `host.docker.internal:4317`
+4. Forwards traces/metrics/logs from local collector to SigNoz at `host.docker.internal:4317`
 
 You can override the SigNoz OTLP endpoint:
 
@@ -67,12 +74,15 @@ You can override the SigNoz OTLP endpoint:
 SIGNOZ_OTLP_ENDPOINT=host.docker.internal:4317 ./run-local-with-signoz.sh
 ```
 
-### 3) Generate telemetry
+## Configuration
 
-In a second terminal:
+Default DB connection string:
 
-```bash
-curl http://localhost:5257/weatherforecast
+```text
+Host=localhost;Port=5432;Database=weather;Username=postgres;Password=postgres
 ```
 
-Then open SigNoz and check traces/metrics in the UI.
+Override it with either:
+
+- `ConnectionStrings:WeatherDb` in config
+- `WEATHER_DB_CONNECTION` environment variable
